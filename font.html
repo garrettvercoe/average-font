@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Font overlap</title>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<style>
+body{
+
+}
+text{
+    text-anchor: left;
+}
+</style>
+<body>
+    <input type="text" id="source"><button id="charge">Update text</button>
+<script>
+    var W = 1300,
+        H = 600;
+
+		var color = d3.scale.category20();
+
+    var svg = d3.select("body")
+                .append("svg")
+                .attr("width", W)
+                .attr("height", H);
+
+    function charge(data, t){
+        svg.selectAll("text")
+            .data(data)
+            .enter()
+            .append("text")
+
+            .attr("x",function(d, i) { return (W/2); })
+            .attr("y",function(d, i) { return (H/2 ); })
+						.attr("rotate",  function(d, i) { return 0; }  )
+            .text(t)
+						//.style("fill", function(d,i){return color(i);})
+            .style("font-size",function(d, i) { return `100px`; })
+
+            .style("opacity",".05")
+            .style("font-family", function(d){
+                return d.font;
+            })
+
+    }
+
+    d3.csv("https://gist.githubusercontent.com/garrettvercoe/9da4c8773ed99810f3e937abe87c980d/raw/e3f4ce14c753551e1cd2bf93095d0f6791e41ec4/data.csv", function(data){
+
+        charge(data, 'O');
+
+        d3.select("#charge").on("click",function(){
+            var texte = d3.select("#source").node().value;
+            svg.selectAll("text")
+            .text(texte);
+        });
+    }
+    );
+
+
+
+
+</script>
+</body>
+</html>
